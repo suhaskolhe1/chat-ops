@@ -2,7 +2,11 @@
 
 [![CI/CD Pipeline](https://github.com/suhaskolhe1/chat-ops/actions/workflows/ci.yml/badge.svg)](https://github.com/suhaskolhe1/chat-ops/actions/workflows/ci.yml)
 
-Chat Ops is a real-time messaging application built for technical teams. It provides a minimal, distraction-free environment for communication across isolated workspaces.
+Chat Ops is a real-time messaging application built as a project to learn and demonstrate full-stack technologies, including WebSockets, Redis, and containerization. It provides a minimal, distraction-free environment for communication across isolated workspaces.
+
+<br/>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/b6RWAd5CBSk" title="Chat Ops Demo Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<br/>
 
 ## Architecture
 
