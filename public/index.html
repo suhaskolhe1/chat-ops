@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Ops</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div id="app">
+        <h2>Chat Ops</h2>
+        
+        <form id="auth-form">
+            <input type="text" id="username" placeholder="Enter User ID (e.g., alice)" required />
+            <input type="text" id="room" placeholder="Enter Room ID (e.g., general)" value="general" required />
+            <button type="submit">Join Chat</button>
+            <div id="auth-error" style="color: #ef4444; font-size: 0.85em; text-align: center;"></div>
+        </form>
+
+        <div id="chat-room" class="hidden">
+            <div class="room-header">
+                <span>Room: <strong id="current-room"></strong></span>
+                <span>User: <strong id="current-user"></strong></span>
+            </div>
+            
+            <div id="messages">
+                <div id="load-more-btn" class="load-more hidden">Load previous messages</div>
+            </div>
+            <div id="typing-indicator"></div>
+
+            <div class="input-group">
+                <input type="text" id="msg-input" placeholder="Type a message..." autocomplete="off" />
+                <button id="send-btn">Send</button>
+            </div>
+            <button id="leave-btn" class="danger" style="margin-top: 12px; width: 100%;">Leave Room</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script src="/js/main.js"></script>
+</body>
+</html>
