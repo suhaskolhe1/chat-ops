@@ -3,6 +3,7 @@ import http from 'http';
 import { Server } from 'socket.io';
 import app from './app.js';
 import { connectRedis } from './config/redis.js';
+import { initDb } from './config/db.js';
 import { setupSocket } from './socket/index.js';
 
 const PORT = process.env.PORT || 3000;
@@ -17,6 +18,7 @@ const io = new Server(server, {
 
 const init = async () => {
   await connectRedis();
+  await initDb();
   setupSocket(io);
   
   server.listen(PORT, () => {
