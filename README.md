@@ -1,6 +1,6 @@
 # Chat Ops 🚀
 
-[![CI/CD Pipeline](https://github.com/USERNAME/chat-ops/actions/workflows/ci.yml/badge.svg)](https://github.com/USERNAME/chat-ops/actions/workflows/ci.yml)
+[![CI/CD Pipeline](https://github.com/suhaskolhe1/chat-ops/actions/workflows/ci.yml/badge.svg)](https://github.com/suhaskolhe1/chat-ops/actions/workflows/ci.yml)
 
 **Chat Ops** is a modern, real-time workspace communication platform. Built with a stark, brutalist design philosophy, it strips away visual clutter to provide a lightning-fast, highly focused environment for engineering teams.
 
@@ -33,7 +33,7 @@ You can spin up the entire application stack locally using Docker.
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/USERNAME/chat-ops.git
+   git clone https://github.com/suhaskolhe1/chat-ops.git
    cd chat-ops
    ```
 
