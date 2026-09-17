@@ -4,9 +4,7 @@
 
 Chat Ops is a real-time messaging application built as a project to learn and demonstrate full-stack technologies, including WebSockets, Redis, and containerization. It provides a minimal, distraction-free environment for communication across isolated workspaces.
 
-<br/>
-<video src="./chat-ops-demo.mp4" controls="controls" muted="muted" width="100%"></video>
-<br/>
+📺 **[Watch the Demo Video](https://youtu.be/b6RWAd5CBSk)**
 
 ## Architecture
 
