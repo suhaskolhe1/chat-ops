@@ -2,37 +2,66 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Chat Ops</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
     <div id="app">
-        <h2>Chat Ops</h2>
-        
-        <form id="auth-form">
-            <input type="text" id="username" placeholder="Enter User ID (e.g., alice)" required />
-            <input type="text" id="room" placeholder="Enter Room ID (e.g., general)" value="general" required />
-            <button type="submit">Join Chat</button>
-            <div id="auth-error" style="color: #ef4444; font-size: 0.85em; text-align: center;"></div>
-        </form>
+        <!-- Auth View -->
+        <div id="auth-view" class="glass-panel">
+            <div class="auth-header">
+                <div class="logo-icon"><i class="fa-solid fa-bolt"></i></div>
+                <h2>Chat Ops</h2>
+                <p>Enter your credentials to join the workspace.</p>
+            </div>
+            <form id="auth-form">
+                <div class="input-group">
+                    <i class="fa-regular fa-user"></i>
+                    <input type="text" id="username" placeholder="User ID (e.g., alice)" required />
+                </div>
+                <div class="input-group">
+                    <i class="fa-solid fa-hashtag"></i>
+                    <input type="text" id="room" placeholder="Room ID (e.g., general)" value="general" required />
+                </div>
+                <button type="submit" class="primary-btn">Join Workspace <i class="fa-solid fa-arrow-right"></i></button>
+                <div id="auth-error" class="error-msg"></div>
+            </form>
+        </div>
 
-        <div id="chat-room" class="hidden">
-            <div class="room-header">
-                <span>Room: <strong id="current-room"></strong></span>
-                <span>User: <strong id="current-user"></strong></span>
+        <!-- Chat View -->
+        <div id="chat-room" class="glass-panel hidden">
+            <div class="chat-header">
+                <div class="header-left">
+                    <div class="logo-icon small"><i class="fa-solid fa-bolt"></i></div>
+                    <div class="header-titles">
+                        <h2>Chat Ops</h2>
+                        <span class="room-badge"><i class="fa-solid fa-hashtag"></i> <strong id="current-room"></strong></span>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="user-badge"><i class="fa-solid fa-circle-user"></i> <strong id="current-user"></strong></div>
+                    <button id="leave-btn" class="icon-btn danger-text" title="Leave Room"><i class="fa-solid fa-right-from-bracket"></i></button>
+                </div>
             </div>
             
-            <div id="messages">
-                <div id="load-more-btn" class="load-more hidden">Load previous messages</div>
+            <div id="messages-container">
+                <div id="load-more-btn" class="load-more hidden">
+                    <i class="fa-solid fa-clock-rotate-left"></i> Load history
+                </div>
+                <div id="messages"></div>
             </div>
+            
             <div id="typing-indicator"></div>
 
-            <div class="input-group">
-                <input type="text" id="msg-input" placeholder="Type a message..." autocomplete="off" />
-                <button id="send-btn">Send</button>
+            <div class="chat-input-area">
+                <div class="chat-input-wrapper">
+                    <input type="text" id="msg-input" placeholder="Type a message..." autocomplete="off" />
+                    <button id="send-btn" class="icon-btn primary-text"><i class="fa-solid fa-paper-plane"></i></button>
+                </div>
             </div>
-            <button id="leave-btn" class="danger" style="margin-top: 12px; width: 100%;">Leave Room</button>
         </div>
     </div>
 

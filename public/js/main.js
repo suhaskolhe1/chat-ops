@@ -6,9 +6,11 @@ let typingTimeout;
 let oldestMessageDate = null;
 
 const messagesDiv = document.getElementById('messages');
-const authForm = document.getElementById('auth-form');
+const messagesContainer = document.getElementById('messages-container');
+const authView = document.getElementById('auth-view');
 const chatRoom = document.getElementById('chat-room');
 const errorDiv = document.getElementById('auth-error');
+const loadBtn = document.getElementById('load-more-btn');
 
 async function login(e) {
   if (e) e.preventDefault();
@@ -47,7 +49,7 @@ function initSocket() {
   });
 
   socket.on('connect', () => {
-    authForm.classList.add('hidden');
+    authView.classList.add('hidden');
     chatRoom.classList.remove('hidden');
     document.getElementById('current-room').innerText = currentRoom;
     document.getElementById('current-user').innerText = currentUser;
@@ -75,24 +77,22 @@ function initSocket() {
   socket.on('presence_update', (data) => {
     const indicator = document.getElementById('typing-indicator');
     if (data.status === 'typing') {
-      indicator.innerText = `${data.userId} is typing...`;
+      indicator.innerHTML = `<i class="fa-solid fa-pen-to-square" style="margin-right: 6px;"></i> ${data.userId} is typing...`;
     } else if (data.status === 'offline') {
-      indicator.innerText = `${data.userId} went offline`;
+      indicator.innerHTML = `<i class="fa-solid fa-user-slash" style="margin-right: 6px;"></i> ${data.userId} went offline`;
       setTimeout(() => {
-        if (indicator.innerText.includes('offline')) indicator.innerText = '';
+        if (indicator.innerHTML.includes('offline')) indicator.innerHTML = '';
       }, 3000);
     } else {
-      indicator.innerText = '';
+      indicator.innerHTML = '';
     }
   });
 }
 
 function setupMessageView() {
-  const loadBtn = document.getElementById('load-more-btn');
   messagesDiv.innerHTML = '';
-  messagesDiv.appendChild(loadBtn);
   loadBtn.classList.remove('hidden');
-  loadBtn.innerText = 'Load previous messages';
+  loadBtn.innerHTML = '<i class="fa-solid fa-clock-rotate-left"></i> Load history';
   oldestMessageDate = null;
 }
 
@@ -107,17 +107,16 @@ async function loadMessages() {
   try {
     const res = await fetch(url);
     const history = await res.json();
-    const loadBtn = document.getElementById('load-more-btn');
     
     if (history.length > 0) {
       oldestMessageDate = history[history.length - 1].created_at;
       history.forEach(msg => appendMessage(msg, false));
       
       if (isFirstLoad) {
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
       }
     } else {
-      if (loadBtn) loadBtn.innerText = 'No more messages';
+      if (loadBtn) loadBtn.innerText = 'No more history';
     }
   } catch (err) {
     console.error('Failed to fetch messages:', err);
@@ -137,10 +136,9 @@ function appendMessage(msg, isNewMessage = true) {
   
   if (isNewMessage) {
     messagesDiv.appendChild(div);
-    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
   } else {
-    const loadBtn = document.getElementById('load-more-btn');
-    messagesDiv.insertBefore(div, loadBtn.nextSibling);
+    messagesDiv.insertBefore(div, messagesDiv.firstChild);
   }
 }
 
@@ -149,7 +147,7 @@ function appendSystemMessage(text) {
   div.className = 'system-message';
   div.innerText = text;
   messagesDiv.appendChild(div);
-  messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }
 
 function sendMessage() {
@@ -184,7 +182,7 @@ function leaveRoom() {
     socket.disconnect();
   }
   
-  authForm.classList.remove('hidden');
+  authView.classList.remove('hidden');
   chatRoom.classList.add('hidden');
   errorDiv.innerText = '';
   document.getElementById('msg-input').value = '';
