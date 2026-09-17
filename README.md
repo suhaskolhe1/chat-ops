@@ -1,54 +1,48 @@
-# Chat Ops 🚀
+# Chat Ops
 
 [![CI/CD Pipeline](https://github.com/suhaskolhe1/chat-ops/actions/workflows/ci.yml/badge.svg)](https://github.com/suhaskolhe1/chat-ops/actions/workflows/ci.yml)
 
-**Chat Ops** is a modern, real-time workspace communication platform. Built with a stark, brutalist design philosophy, it strips away visual clutter to provide a lightning-fast, highly focused environment for engineering teams.
+Chat Ops is a real-time messaging application built for technical teams. It provides a minimal, distraction-free environment for communication across isolated workspaces.
 
-## 🌟 Overview for Recruiters & Hiring Managers
-
-If you are reviewing this project, here is a quick summary of the technical achievements demonstrated in this repository:
-
-- **Full-Stack JavaScript:** Built using modern ES Modules across both the frontend and backend (Node.js).
-- **Real-Time Communication:** Leverages **Socket.io (WebSockets)** to ensure messages are delivered instantly without page refreshes.
-- **Enterprise-Grade Infrastructure:** Utilizes **PostgreSQL** for persistent message storage and **Redis** for managing real-time user presence (online/typing status).
-- **Containerization:** Fully dockerized utilizing multi-stage builds. A custom `docker-compose.yml` orchestrates the Node application, Postgres database, and Redis cache, ensuring identical behavior across local and production environments.
-- **CI/CD Automation:** Integrates **GitHub Actions** to automatically spin up service containers, run unit tests via **Jest**, and trigger zero-downtime deployments to **Render** via webhooks upon successful builds.
-- **UI/UX:** Features a bespoke, zero-dependency "Brutalist" frontend. No bloated CSS frameworks—just pure, high-contrast, minimalist design optimized for developer workflows.
-
----
-
-## 🛠️ Technical Stack
+## Architecture
 
 - **Backend:** Node.js, Express.js
-- **Database:** PostgreSQL
-- **Cache / PubSub:** Redis
-- **WebSockets:** Socket.io
-- **Frontend:** Vanilla HTML/CSS/JS (Brutalist UI)
-- **Testing:** Jest, Supertest
-- **DevOps:** Docker, Docker Compose, GitHub Actions, Render
+- **Database:** PostgreSQL (persistent storage)
+- **Real-time Engine:** Socket.io (WebSockets)
+- **Cache/State:** Redis (user presence tracking)
+- **Frontend:** Vanilla HTML/CSS/JS with a brutalist design system
+- **Infrastructure:** Docker, Render, GitHub Actions
 
-## 🚀 Running Locally
+## Features
 
-You can spin up the entire application stack locally using Docker.
+- Real-time bidirectional messaging via WebSockets.
+- Isolated chat rooms/workspaces.
+- Real-time user presence (online/offline tracking).
+- Typing indicators.
+- Custom brutalist UI designed for high contrast and minimal overhead.
 
-1. **Clone the repository**
+## Local Development
+
+The application is fully containerized. To spin up the local environment (Node server, Postgres database, and Redis instance):
+
+1. Clone the repository:
    ```bash
    git clone https://github.com/suhaskolhe1/chat-ops.git
    cd chat-ops
    ```
 
-2. **Start the environment**
+2. Start the services:
    ```bash
    docker compose up --build
    ```
 
-3. **Open the app**
-   Navigate to `http://localhost:3000` in your web browser. Open a second tab to test the real-time WebSocket messaging!
+3. Access the application at `http://localhost:3000`.
 
-## 🧪 Running Tests
+## Testing
 
-The test suite runs automatically on every push via GitHub Actions, but you can run it locally:
+Unit and integration tests are written in Jest. They execute automatically in the CI pipeline.
 
+To run them locally:
 ```bash
 npm install
 npm test
