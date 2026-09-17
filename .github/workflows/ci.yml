@@ -1,0 +1,81 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    # 1. Spin up PostgreSQL and Redis service containers
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_USER: chatuser
+          POSTGRES_PASSWORD: chatpassword
+          POSTGRES_DB: chatdb
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      # 2. Install dependencies and run tests
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Initialize Database Schema
+        env:
+          PGPASSWORD: chatpassword
+        run: |
+          # Install PostgreSQL client to run the schema script
+          sudo apt-get update && sudo apt-get install -y postgresql-client
+          psql -h localhost -U chatuser -d chatdb -f database.sql
+
+      - name: Run Jest Tests
+        env:
+          DATABASE_URL: postgres://chatuser:chatpassword@localhost:5432/chatdb
+          REDIS_URL: redis://localhost:6379
+          JWT_SECRET: supersecretjwtkey_for_testing
+          PORT: 3000
+        run: npm test
+
+      # 3. Build the Docker image
+      - name: Build Docker Image
+        run: docker build -t chat-ops-backend .
+
+      # 4. Trigger deployment on Render via Deploy Hook
+      - name: Trigger Render Deployment
+        if: success()
+        run: |
+          if [ -z "${{ secrets.RENDER_DEPLOY_HOOK_URL }}" ]; then
+            echo "Deploy hook URL not set in GitHub Secrets. Skipping deployment."
+          else
+            echo "Triggering Render deployment..."
+            curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
+          fi
