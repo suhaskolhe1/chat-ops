@@ -19,7 +19,7 @@ async function login(e) {
   const roomId = document.getElementById('room').value.trim();
   
   if (!userId || !roomId) {
-    errorDiv.innerText = 'Both User ID and Room ID are required.';
+    errorDiv.innerText = 'ERROR: User ID and Room ID are required.';
     return;
   }
 
@@ -30,7 +30,7 @@ async function login(e) {
       body: JSON.stringify({ userId })
     });
     
-    if (!res.ok) throw new Error('Authentication failed');
+    if (!res.ok) throw new Error('ERR_AUTH_FAILED');
     
     const data = await res.json();
     token = data.token;
@@ -66,25 +66,25 @@ function initSocket() {
   });
 
   socket.on('connect_error', (err) => {
-    errorDiv.innerText = err.message;
+    errorDiv.innerText = `ERR: ${err.message}`;
     socket.disconnect();
   });
 
   socket.on('new_message', (msg) => appendMessage(msg, true));
-  socket.on('user_joined', (data) => appendSystemMessage(`${data.userId} joined the room`));
-  socket.on('user_left', (data) => appendSystemMessage(`${data.userId} left the room`));
+  socket.on('user_joined', (data) => appendSystemMessage(`> ${data.userId} joined workspace`));
+  socket.on('user_left', (data) => appendSystemMessage(`> ${data.userId} disconnected`));
 
   socket.on('presence_update', (data) => {
     const indicator = document.getElementById('typing-indicator');
     if (data.status === 'typing') {
-      indicator.innerHTML = `<i class="fa-solid fa-pen-to-square" style="margin-right: 6px;"></i> ${data.userId} is typing...`;
+      indicator.innerText = `[${data.userId} is typing...]`;
     } else if (data.status === 'offline') {
-      indicator.innerHTML = `<i class="fa-solid fa-user-slash" style="margin-right: 6px;"></i> ${data.userId} went offline`;
+      indicator.innerText = `[${data.userId} went offline]`;
       setTimeout(() => {
-        if (indicator.innerHTML.includes('offline')) indicator.innerHTML = '';
+        if (indicator.innerText.includes('offline')) indicator.innerText = '';
       }, 3000);
     } else {
-      indicator.innerHTML = '';
+      indicator.innerText = '';
     }
   });
 }
@@ -92,7 +92,7 @@ function initSocket() {
 function setupMessageView() {
   messagesDiv.innerHTML = '';
   loadBtn.classList.remove('hidden');
-  loadBtn.innerHTML = '<i class="fa-solid fa-clock-rotate-left"></i> Load history';
+  loadBtn.innerText = '[ LOAD_HISTORY ]';
   oldestMessageDate = null;
 }
 
@@ -116,7 +116,7 @@ async function loadMessages() {
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
       }
     } else {
-      if (loadBtn) loadBtn.innerText = 'No more history';
+      if (loadBtn) loadBtn.innerText = '[ END_OF_HISTORY ]';
     }
   } catch (err) {
     console.error('Failed to fetch messages:', err);
@@ -125,13 +125,15 @@ async function loadMessages() {
 
 function appendMessage(msg, isNewMessage = true) {
   const div = document.createElement('div');
-  div.className = `message ${msg.sender_id === currentUser ? 'self' : ''}`;
+  div.className = 'message-row';
   
-  const time = new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  const time = new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
   div.innerHTML = `
-    ${msg.sender_id !== currentUser ? `<strong>${msg.sender_id}</strong>` : ''}
-    ${msg.content} 
-    <small>${time}</small>
+    <div class="message-meta">
+      <span class="message-author">${msg.sender_id}</span>
+      <span class="message-time">${time}</span>
+    </div>
+    <div class="message-content">${msg.content}</div>
   `;
   
   if (isNewMessage) {

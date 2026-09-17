@@ -4,53 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Chat Ops</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
     <div id="app">
         <!-- Auth View -->
-        <div id="auth-view" class="glass-panel">
+        <div id="auth-view" class="panel">
             <div class="auth-header">
-                <div class="logo-icon"><i class="fa-solid fa-bolt"></i></div>
-                <h2>Chat Ops</h2>
-                <p>Enter your credentials to join the workspace.</p>
+                <h2>CHAT_OPS</h2>
+                <p>System Login</p>
             </div>
             <form id="auth-form">
                 <div class="input-group">
-                    <i class="fa-regular fa-user"></i>
-                    <input type="text" id="username" placeholder="User ID (e.g., alice)" required />
+                    <label for="username">USER_ID</label>
+                    <input type="text" id="username" placeholder="e.g. root" required autocomplete="off" />
                 </div>
                 <div class="input-group">
-                    <i class="fa-solid fa-hashtag"></i>
-                    <input type="text" id="room" placeholder="Room ID (e.g., general)" value="general" required />
+                    <label for="room">WORKSPACE</label>
+                    <input type="text" id="room" placeholder="e.g. main" value="main" required autocomplete="off" />
                 </div>
-                <button type="submit" class="primary-btn">Join Workspace <i class="fa-solid fa-arrow-right"></i></button>
+                <button type="submit" class="btn primary-btn">CONNECT</button>
                 <div id="auth-error" class="error-msg"></div>
             </form>
         </div>
 
         <!-- Chat View -->
-        <div id="chat-room" class="glass-panel hidden">
+        <div id="chat-room" class="panel hidden">
             <div class="chat-header">
                 <div class="header-left">
-                    <div class="logo-icon small"><i class="fa-solid fa-bolt"></i></div>
-                    <div class="header-titles">
-                        <h2>Chat Ops</h2>
-                        <span class="room-badge"><i class="fa-solid fa-hashtag"></i> <strong id="current-room"></strong></span>
-                    </div>
+                    <h2>CHAT_OPS</h2>
+                    <span class="divider">|</span>
+                    <span class="room-badge">#<span id="current-room"></span></span>
                 </div>
                 <div class="header-right">
-                    <div class="user-badge"><i class="fa-solid fa-circle-user"></i> <strong id="current-user"></strong></div>
-                    <button id="leave-btn" class="icon-btn danger-text" title="Leave Room"><i class="fa-solid fa-right-from-bracket"></i></button>
+                    <span class="user-badge">@<span id="current-user"></span></span>
+                    <button id="leave-btn" class="btn" title="Leave">EXIT</button>
                 </div>
             </div>
             
             <div id="messages-container">
-                <div id="load-more-btn" class="load-more hidden">
-                    <i class="fa-solid fa-clock-rotate-left"></i> Load history
-                </div>
+                <div id="load-more-btn" class="load-more hidden">[ LOAD_HISTORY ]</div>
                 <div id="messages"></div>
             </div>
             
@@ -58,8 +52,9 @@
 
             <div class="chat-input-area">
                 <div class="chat-input-wrapper">
-                    <input type="text" id="msg-input" placeholder="Type a message..." autocomplete="off" />
-                    <button id="send-btn" class="icon-btn primary-text"><i class="fa-solid fa-paper-plane"></i></button>
+                    <span class="prompt">></span>
+                    <input type="text" id="msg-input" placeholder="..." autocomplete="off" />
+                    <button id="send-btn" class="btn primary-btn">SEND</button>
                 </div>
             </div>
         </div>
